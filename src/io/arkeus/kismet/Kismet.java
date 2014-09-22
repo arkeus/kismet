@@ -7,6 +7,7 @@ import io.arkeus.kismet.scraper.d2jsp.D2JSPScraper;
 import io.arkeus.kismet.scraper.hackernews.HackerNewsScraper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -41,12 +42,13 @@ public class Kismet implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Running tick");
+		System.out.println("Running tick " + new Date());
 		for (final Scraper scraper : scrapers) {
 			try {
 				System.out.println("Scraping " + scraper);
 				final List<Entity> entities = scraper.scrape();
 				for (final Entity entity : entities) {
+					System.out.println("New post: " + entity);
 					Notification.show(entity);
 				}
 			} catch (final RuntimeException e) {

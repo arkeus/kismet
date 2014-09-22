@@ -11,12 +11,12 @@ import ch.swingfx.twinkle.NotificationBuilder;
 import ch.swingfx.twinkle.event.INotificationEventListener;
 import ch.swingfx.twinkle.event.NotificationEvent;
 import ch.swingfx.twinkle.style.INotificationStyle;
-import ch.swingfx.twinkle.style.theme.DarkDefaultNotification;
+import ch.swingfx.twinkle.style.theme.LightDefaultNotification;
 import ch.swingfx.twinkle.window.Positions;
 
 public class Notification {
-	private static final INotificationStyle STYLE = new DarkDefaultNotification().withWidth(400).withAlpha(0.9f);
-	private static final int DISPLAY_TIME = 15000;
+	private static final INotificationStyle STYLE = new LightDefaultNotification().withWidth(400).withAlpha(0.9f);
+	private static final int DISPLAY_TIME = 10000;
 
 	public static void show(final Entity entity) {
 		new NotificationBuilder().withStyle(STYLE).withTitle(entity.title()).withMessage(entity.description()).withDisplayTime(DISPLAY_TIME)

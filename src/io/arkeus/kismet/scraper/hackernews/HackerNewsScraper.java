@@ -35,10 +35,55 @@ public class HackerNewsScraper extends NewPostScraper {
 			}
 			final Element main = title.get(1);
 			final Element sub = iterator.next();
-			posts.add(new HackerNewsPost(main, sub));
+			final Entity parsed = parse(main, sub);
+			if (parsed != null) {
+				posts.add(parsed);
+			}
 			iterator.next();
 		}
 		return posts;
+	}
+
+	private Entity parse(final Element main, final Element sub) {
+		try {
+			final Element link = main.select("a").first();
+			final String url = link.attr("href");
+			final String title = link.text();
+
+			final Element siteElement = main.select("span.comhead").first();
+			final String site = siteElement == null ? null : siteElement.text();
+
+			final Element subtext = sub.select("td.subtext").first();
+
+			final int points;
+			final String author;
+			final String[] subtextSpan = subtext.select("span").text().split(" ");
+			if (subtextSpan.length == 2) {
+				points = Integer.parseInt(subtextSpan[0]);
+				author = subtext.select("a").first().text();
+			} else {
+				points = -1;
+				author = "Unknown";
+			}
+
+			final Elements commentsElements = subtext.select("a");
+			final int comments;
+			if (commentsElements.size() == 2) {
+				final String[] commentsParts = commentsElements.get(1).text().split(" ");
+				if (commentsParts.length == 2) {
+					comments = Integer.parseInt(commentsParts[0]);
+				} else {
+					comments = 0;
+				}
+			} else {
+				comments = -1;
+			}
+
+			return new HackerNewsPost(url, title, site, points, author, comments);
+		} catch (final RuntimeException e) {
+			System.out.println("Failed to parse post\n\tMain: " + main + "\n\tSub: " + sub);
+			return null;
+		}
 	}
 
 	private static class HackerNewsPost implements Entity {
@@ -50,37 +95,13 @@ public class HackerNewsScraper extends NewPostScraper {
 		private final int comments;
 		private final Date createdAt;
 
-		public HackerNewsPost(final Element main, final Element sub) {
-			final Element link = main.select("a").first();
-			this.url = link.attr("href");
-			this.title = link.text();
-
-			final Element siteElement = main.select("span.comhead").first();
-			this.site = siteElement == null ? null : siteElement.text();
-
-			final Element subtext = sub.select("td.subtext").first();
-
-			final String[] subtextSpan = subtext.select("span").text().split(" ");
-			if (subtextSpan.length == 2) {
-				this.points = Integer.parseInt(subtextSpan[0]);
-				this.author = subtext.select("a").first().text();
-			} else {
-				this.points = -1;
-				this.author = "Unknown";
-			}
-
-			final Elements commentsElements = subtext.select("a");
-			if (commentsElements.size() == 2) {
-				final String[] commentsParts = commentsElements.get(1).text().split(" ");
-				if (commentsParts.length == 2) {
-					this.comments = Integer.parseInt(commentsParts[0]);
-				} else {
-					this.comments = 0;
-				}
-			} else {
-				this.comments = -1;
-			}
-
+		public HackerNewsPost(final String url, final String title, final String site, final int points, final String author, final int comments) {
+			this.url = url;
+			this.title = title;
+			this.site = site;
+			this.points = points;
+			this.author = author;
+			this.comments = comments;
 			this.createdAt = new Date();
 		}
 
