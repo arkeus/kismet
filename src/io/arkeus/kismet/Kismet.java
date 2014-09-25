@@ -13,6 +13,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Library for parsing and showing notifications on posts from popular sites.
+ */
 public class Kismet implements Runnable {
 	private static final long DEFAULT_INITIAL_DELAY = 0l;
 	private static final long DEFAULT_PERIOD = 60l;
@@ -29,10 +32,17 @@ public class Kismet implements Runnable {
 		this.period = period;
 	}
 
+	/**
+	 * Schedules the scrapers to begin.
+	 */
 	public void start() {
 		executor.scheduleAtFixedRate(this, initialDelay, period, TimeUnit.SECONDS);
 	}
 
+	/**
+	 * Initializes scrapers by running each to seed any existing data.
+	 * @return self
+	 */
 	public Kismet initialize() {
 		for (final Scraper scraper : scrapers) {
 			scraper.scrape();
