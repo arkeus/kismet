@@ -14,6 +14,9 @@ import ch.swingfx.twinkle.style.INotificationStyle;
 import ch.swingfx.twinkle.style.theme.LightDefaultNotification;
 import ch.swingfx.twinkle.window.Positions;
 
+/**
+ * Static helper class for showing notifications.
+ */
 public class Notification {
 	private static final INotificationStyle STYLE = new LightDefaultNotification().withWidth(400).withAlpha(0.9f);
 	private static final int DISPLAY_TIME = 10000;
