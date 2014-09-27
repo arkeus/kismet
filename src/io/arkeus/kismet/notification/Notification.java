@@ -21,11 +21,19 @@ public class Notification {
 	private static final INotificationStyle STYLE = new LightDefaultNotification().withWidth(400).withAlpha(0.9f);
 	private static final int DISPLAY_TIME = 10000;
 
+	/**
+	 * Show a notification for the passed entity.
+	 *
+	 * @param entity to show notification for
+	 */
 	public static void show(final Entity entity) {
 		new NotificationBuilder().withStyle(STYLE).withTitle(entity.title()).withMessage(entity.description()).withDisplayTime(DISPLAY_TIME)
 				.withPosition(Positions.SOUTH_EAST).withListener(new NotificationListener(entity)).showNotification();
 	}
 
+	/**
+	 * Notification event listener defining the behavior of the notification.
+	 */
 	private static final class NotificationListener implements INotificationEventListener {
 		private final Entity entity;
 
