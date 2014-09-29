@@ -12,6 +12,9 @@ import java.util.List;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+/**
+ * Scraper to parse the first page of posts from a single d2jsp forum.
+ */
 public class D2JSPScraper extends NewPostScraper {
 	private static final String URL_FORMAT = "http://forums.d2jsp.org/forum.php?f=%s";
 	private static final String RELATIVE_URL_FORMAT = "http://forums.d2jsp.org/%s";
