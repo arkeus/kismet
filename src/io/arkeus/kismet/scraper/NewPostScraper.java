@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Scraper containing logic to filter out previously known posts.
+ */
 public abstract class NewPostScraper implements Scraper {
 	private final Set<Entity> knownPosts;
 
@@ -28,5 +31,9 @@ public abstract class NewPostScraper implements Scraper {
 		return entities;
 	}
 
+	/**
+	 * Implementation should return all current posts.
+	 * @return all current posts
+	 */
 	protected abstract List<Entity> getPosts();
 }
